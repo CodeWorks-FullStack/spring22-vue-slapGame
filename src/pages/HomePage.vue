@@ -22,6 +22,7 @@
   <Modal id="target-modal">
     <!-- NOTE this template #modal-title is looking for a slot with the same name to inject into -->
     <template #modal-title>
+      <!-- Using elvis operator to allow the activeTarget to be null because it won't technically exist until we set it -->
       <h3>{{ activeTarget?.name }}</h3>
     </template>
     <template #modal-body>
@@ -38,9 +39,10 @@ export default {
   // NOTE think of this as the "constructor" of the controller here
   name: "Home",
   setup() {
-    // NOTE ref is
+    // NOTE ref is reactive, takes a value (obj, bool, array, etc) and returns a reactive mutable object.
+    // If you are going to set values to a ref externally (with v-model/forms), you need to use .value when pulling data out
     let activeTarget = ref();
-    // This is a localized state - we aren't go to access this anywhere else
+    // This is a localized state - abstracted this to the Appstate
     // const state = reactive({
     //   targets: [
     //     {
@@ -63,7 +65,7 @@ export default {
     //     },
     //   ],
     // });
-    // NOTE in order to access js variables, functions, etc they HAVE to be returned
+    // NOTE in order to access js variables, functions, in the above template etc they HAVE to be returned
     return {
       activeTarget,
       // NOTE think of the computed as the 'ProxyState.on' of vue
@@ -74,7 +76,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-// NOTE scoped keeps the stlying in just this page
+// NOTE scoped keeps the styling in just this page
 img {
   border-radius: 50%;
   height: 100px;
